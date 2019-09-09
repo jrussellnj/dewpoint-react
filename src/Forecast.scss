@@ -1,0 +1,198 @@
+@import 'variables.scss';
+@import 'header.scss';
+@import 'footer.scss';
+
+// General body styling
+body {
+  font-family: 'Lora', serif;
+}
+
+// Location and weather loading icons
+.loading-icons {
+  margin: 1em 0;
+  vertical-align: middle;
+
+  @include min($desktopXSmall) {
+    height: 20px;
+    margin: 0;
+  }
+
+  #getting-location,
+  #getting-weather {
+    animation: pulse 1s infinite;
+    height: 25px;
+    display: none;
+
+    &.showing {
+      display: inline;
+    }
+  }
+}
+
+// Forecast block
+.forecast-holder {
+
+  #forecast-blocks {
+    .row {
+      margin: 0;
+    }
+  }
+
+  .city-name {
+    min-height: 20px;
+    line-height: 1.25em;
+  }
+
+  .currently {
+    position: relative;
+
+    &.day {
+      .inner-wrapper {
+        height: auto;
+
+        @include min($desktopXSmall) {
+          height: 250px;
+        }
+      }
+    }
+
+    .today {
+      border: 3px solid #000;
+
+      .heading {
+        font-size: 1.5em;
+      }
+
+      .weather-icon {
+        display: inline-block;
+        margin: 4px 0 0;
+        vertical-align: top;
+      }
+
+      .weather-desc {
+        display: inline-block;
+        margin: 0 0 0 6px;
+        vertical-align: top;
+
+        @include min($desktopXSmall) {
+          max-width: 40%;
+        }
+      }
+
+      p {
+        margin: 0;
+      }
+    }
+
+    .dewpoint {
+      font-size: 4em;
+      text-align: center;
+
+      @include min($desktopXSmall) {
+        position: absolute;
+        top: 45px;
+        right: 70px;
+      }
+
+      .discomfort-text {
+        font-size: .3em;
+        text-align: center;
+      }
+    }
+
+    .currently-data {
+      font-size: 1.0em;
+      margin: 0 0 1em;
+    }
+  }
+
+  .day {
+    min-height: 15em;
+    padding: 5px;
+
+    .inner-wrapper {
+      height: 250px;
+      width: 100%;
+
+      .dewdrop-icon{
+        @include vertical-align;
+        height: 30px;
+      }
+
+      .icon-holder {
+        display: inline-block;
+        width: 20px;
+      }
+
+      .small-icon {
+        @include vertical-align;
+        height: 15px;
+      }
+
+      .day-contents {
+        height: 100%;
+        position: relative;
+        width: 100%;
+
+        .temperature {
+          font-size: 4em;
+          position: absolute;
+          text-align: center;
+          top: 0;
+          width: 100%;
+
+          .date {
+            font-size: .25em;
+            text-align: left;
+          }
+
+          .discomfort-text {
+            font-size: .25em;
+            text-align: center;
+          }
+        }
+
+        .summary {
+          bottom: 0;
+          font-size: .9em;
+          position: absolute;
+
+        }
+      }
+    }
+  }
+}
+
+/* Geolocation denied */
+.denied-geolocation {
+  display: none;
+
+  &.showing {
+    display: flex;
+  }
+}
+
+/* Location search bar */
+#location-search {
+  background-color: #fff;
+  border-radius: 2px;
+  border: 1px solid transparent;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  display: block;
+  font-family: Roboto;
+  font-size: 15px;
+  font-weight: 300;
+  height: 29px;
+  margin: 1.5em auto .75em;
+  outline: none;
+  padding: 0 11px 0 13px;
+  text-overflow: ellipsis;
+  width: 80%;
+
+
+  @include min($desktopXSmall) {
+    display: inline-block;
+    max-width: 60%;
+  }
+}
