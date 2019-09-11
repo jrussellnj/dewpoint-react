@@ -1,6 +1,4 @@
 @import 'variables.scss';
-@import 'header.scss';
-@import 'footer.scss';
 
 // General body styling
 body {
@@ -164,7 +162,7 @@ body {
 }
 
 /* Geolocation denied */
-.denied-geolocation {
+#denied-geolocation {
   display: none;
 
   &.showing {

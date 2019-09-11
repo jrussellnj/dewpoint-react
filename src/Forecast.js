@@ -125,7 +125,7 @@ class Forecast extends React.Component {
           {dailyData}
         </div>
 
-        <div className="row denied-geolocation text-center">
+        <div className="row text-center" id="denied-geolocation">
           <div className="col-12">
             <h3>Geolocation failed</h3>
             <p>But that's alright! You can use the site without geolocation by entering a location above.</p>
@@ -139,8 +139,11 @@ class Forecast extends React.Component {
 
   /* Retrieve the user's location */
   getUserLocation() {
+    let that = this;
+        //$gettingLocation = jQuery('#getting-location'),
+        // $userDeniedGeolocation = jQuery('#denied-geolocation');
 
-    var that = this;
+    // $gettingLocation.addClass('showing');
 
     // Get the user's latitude and longitude
     if ("geolocation" in navigator) {
