@@ -96,7 +96,7 @@ class Forecast extends React.Component {
 
             <div className="temperature">
               <div className="date">
-                <Moment format="YYYY/MM/DD">
+                <Moment format="dddd, MMMM, Do">
                   {this.offsetTime(day.time, this.state.weather.offset)}
                 </Moment>
               </div>
