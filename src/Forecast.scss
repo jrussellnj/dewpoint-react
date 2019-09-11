@@ -19,7 +19,6 @@ body {
   #getting-weather {
     animation: pulse 1s infinite;
     height: 25px;
-    display: none;
 
     &.showing {
       display: inline;

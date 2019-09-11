@@ -18,7 +18,9 @@ class Forecast extends React.Component {
     // Set the empty default state
     this.state = {
       city: null,
-      weather: null
+      weather: null,
+      isFindingLocation: false,
+      isLoadingWeather: false
     };
   }
 
@@ -114,6 +116,18 @@ class Forecast extends React.Component {
 
     return (
       <div>
+        <div className="row loading-icons">
+          <div className="col-12 text-center">
+            { this.state.isFindingLocation ? <img src="/image/target.svg" id="getting-location" alt="Finding location" /> : null }
+            { this.state.isLoadingWeather ? <img src="/image/sun-cloud.svg" id="getting-weather" alt="Loading weather" /> : null }
+          </div>
+        </div>
+
+      <div className="row">
+        <div className="col-12">
+          <div className="row justify-content-center forecast-holder">
+            <div className="col-12">
+
         <div className="row">
           <div className="col-12">
             <h5 className="city-name">{this.state.city}</h5>
@@ -131,6 +145,17 @@ class Forecast extends React.Component {
             <p>But that's alright! You can use the site without geolocation by entering a location above.</p>
           </div>
         </div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
       </div>
     );
   }
@@ -143,7 +168,9 @@ class Forecast extends React.Component {
         //$gettingLocation = jQuery('#getting-location'),
         // $userDeniedGeolocation = jQuery('#denied-geolocation');
 
-    // $gettingLocation.addClass('showing');
+    // $gettingLocation.addClass('showing')
+
+    this.setState({ 'isFindingLocation': true });
 
     // Get the user's latitude and longitude
     if ("geolocation" in navigator) {
@@ -152,6 +179,8 @@ class Forecast extends React.Component {
 
         // If we get permission to the user's location, use it to kick off the API call
         function(userCoords) {
+
+          that.setState({ 'isFindingLocation': false });
 
           // Get the weather
           that.getWeather(userCoords.coords);
@@ -184,7 +213,8 @@ class Forecast extends React.Component {
         //parsedCoords = JSON.parse(localStorage.getItem('cachedCoords')),
         cityName = '';
 
-    //$gettingWeather.addClass('showing');
+    this.setState({ 'isLoadingWeather': true });
+
 
     fetch('http://localhost:3001/get-weather?longitude=' + coords.longitude + '&latitude=' + coords.latitude)
       .then(results => {
@@ -205,7 +235,8 @@ class Forecast extends React.Component {
               // Update the state with the retrieveved weather data and the city name
               that.setState({
                 weather: data,
-                city: cityName
+                city: cityName,
+                isLoadingWeather: false
               });
 
               that.getCityName(coords);
