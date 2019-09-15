@@ -216,7 +216,7 @@ class Forecast extends React.Component {
     this.setState({ 'isLoadingWeather': true });
 
 
-    fetch('http://localhost:3001/get-weather?longitude=' + coords.longitude + '&latitude=' + coords.latitude)
+    fetch('http://localhost:3001/get-weather?longitude=' + coords.longitude + '&latitude=' + coords.latitude, { credentials: 'include' })
       .then(results => {
         return results.json()
       })
