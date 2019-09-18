@@ -1,4 +1,5 @@
 import React from 'react';
+import CurrentlyBlock from './CurrentlyBlock.js';
 import DailyBlock from './DailyBlock.js';
 
 import './Forecast.scss';
@@ -10,63 +11,26 @@ class Forecast extends React.Component {
   /* Render */
   render() {
 
-    // TODO: Break this down into more components, such as <CurrentlyBlock> and <DailyBlock> for each individual day block!
-    let currentlyData = this.props.weather != null ?
+    let currentlyData = this.props.weather == null ? null :
       <div className="col-11 col-md-12 currently day">
         <div className="row today">
-          <div className={'p-3 inner-wrapper col-12 col-md-6 ' + this.getDiscomfortLevel(this.props.weather.currently.dewPoint, this.props.units).dpClass}>
+          <CurrentlyBlock
+            weather={this.props.weather.currently}
+            heading="Right Now"
+            key={this.props.weather.currently.time}
+            getDiscomfortLevel={this.getDiscomfortLevel}
+            getValueByUnits={this.getValueByUnits}
+            units={this.props.units} />
 
-            <div className="currently-data">
-              <p className="heading">Right Now</p>
-
-              <div>
-                <div className="weather-icon"><img className="small-icon" src="/image/sun-cloud.svg" alt="Sun behind cloud" /></div>
-                <div className="weather-desc">{this.props.weather.currently.summary}</div>
-              </div>
-
-              <div>
-                <div className="weather-icon"><img className="small-icon" src="/image/thermometer.svg" alt="Thermometer" /></div>
-                <div className="weather-desc">Temperature: {Math.round(this.props.weather.currently.temperature)}&deg;</div>
-              </div>
-
-              <div>
-                <div className="weather-icon"><img className="small-icon" src="/image/humidity.svg" alt="Humidity scale" /></div>
-                <div className="weather-desc">Humidity: {Math.round(this.props.weather.currently.humidity * 100)}%</div>
-              </div>
-
-              <div className="dewpoint">
-                <div><img className="dewdrop-icon" src="/image/drop-silhouette.svg" alt="Dew drop" /> {this.getValueByUnits(this.props.weather.currently.dewPoint, this.props.units)}&deg;</div>
-                <div className="discomfort-text">{this.getDiscomfortLevel(this.props.weather.currently.dewPoint, this.props.units).text}</div>
-              </div>
-            </div>
-          </div>
-
-          <div className={'p-3 inner-wrapper col-12 col-md-6 ' + this.getDiscomfortLevel(this.props.weather.daily.data[0].dewPoint, this.props.units).dpClass}>
-            <p className="heading">Today's forecast</p>
-
-            <div>
-              <div className="weather-icon"><img className="small-icon" src="/image/sun-cloud.svg" alt="Sun behind cloud" /></div>
-              <div className="weather-desc">{this.props.weather.daily.data[0].summary}</div>
-            </div>
-
-            <div>
-              <div className="weather-icon"><img className="small-icon" src="/image/thermometer.svg" alt="Thermometer" /></div>
-              <div className="weather-desc">Temperature: {Math.round(this.props.weather.daily.data[0].temperatureHigh)}&deg;</div>
-            </div>
-
-            <div>
-              <div className="weather-icon"><img className="small-icon" src="/image/humidity.svg" alt="Humidity scale" /></div>
-              <div className="weather-desc">Humidity: {Math.round(this.props.weather.daily.data[0].humidity * 100)}%</div>
-            </div>
-
-            <div className="dewpoint">
-              <div><img className="dewdrop-icon" src="/image/drop-silhouette.svg" alt="Dew drop" /> {this.getValueByUnits(this.props.weather.daily.data[0].dewPoint, this.props.units)}&deg;</div>
-              <div className="discomfort-text">{this.getDiscomfortLevel(this.props.weather.daily.data[0].dewPoint, this.props.units).text}</div>
-            </div>
-          </div>
+          <CurrentlyBlock
+            weather={this.props.weather.daily.data[0]}
+            heading="Today's Forecast"
+            key={this.props.weather.daily.data[0].time}
+            getDiscomfortLevel={this.getDiscomfortLevel}
+            getValueByUnits={this.getValueByUnits}
+            units={this.props.units} />
         </div>
-      </div>
-      : null;
+      </div>;
 
     let dailyData = (this.props.weather == null ? null :
       this.props.weather.daily.data.slice(1).map(day =>

@@ -6,9 +6,10 @@ class DailyBlock extends React.Component {
   // Lifecycle methods
 
   render() {
-    const discomfortLevel = this.props.getDiscomfortLevel(this.props.day.dewPoint, this.props.units);
+    const thisDay = this.props.day,
+          discomfortLevel = this.props.getDiscomfortLevel(thisDay.dewPoint, this.props.units);
 
-    const blockBody = (this.props.day === undefined ? null :
+    const blockBody = (thisDay === undefined ? null :
       <div className="col-11 col-sm-4 col-md-3 day">
         <div className={ 'd-flex align-items-center p-3 inner-wrapper ' + discomfortLevel.dpClass}>
           <div className="day-contents">
@@ -16,24 +17,22 @@ class DailyBlock extends React.Component {
             <div className="temperature">
               <div className="date">
                 <Moment format="dddd, MMMM, Do">
-                  {this.offsetTime(this.props.day.time, this.props.offset)}
+                  {this.offsetTime(thisDay.time, this.props.offset)}
                 </Moment>
               </div>
-              <img className="dewdrop-icon" src="/image/drop-silhouette.svg" alt="Dew drop" /> {this.props.getValueByUnits(this.props.day.dewPoint, this.props.units)}&deg;
+              <img className="dewdrop-icon" src="/image/drop-silhouette.svg" alt="Dew drop" /> {this.props.getValueByUnits(thisDay.dewPoint, this.props.units)}&deg;
               <div className="discomfort-text">{discomfortLevel.text}</div>
             </div>
 
             <div className="summary">
-              <div>{this.props.day.summary} High: {Math.round(this.props.day.temperatureHigh)}&deg;. Humidity: {Math.round(this.props.day.humidity * 100)}%.</div>
+              <div>{thisDay.summary} High: {Math.round(thisDay.temperatureHigh)}&deg;. Humidity: {Math.round(thisDay.humidity * 100)}%.</div>
             </div>
           </div>
         </div>
       </div>
     );
 
-    return(
-      blockBody
-    )
+    return blockBody;
   }
 
   // Custom methods
