@@ -125,7 +125,6 @@ class App extends React.Component {
     let
       that = this,
       geocodeUrl = 'https://maps.googleapis.com/maps/api/geocode/json?key=' + keys.googleMapsApi  + '&latlng=' + coords.latitude + ',' + coords.longitude;
-      // $locationSearch = $('#location-search');
 
     fetch(geocodeUrl)
       .then(results => {
