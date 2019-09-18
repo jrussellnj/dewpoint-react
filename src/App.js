@@ -89,12 +89,7 @@ class App extends React.Component {
 
   /* Switch the units between imperial and metric */
   changeUnits() {
-    var newUnits =  this.state.units === 'si' ? 'us' : 'si';
-
-    this.setState({
-      units: newUnits,
-      weather: this.getWeather(this.state.coords, newUnits)
-    });
+    this.getWeather(this.state.coords, (this.state.units === 'si' ? 'us' : 'si'));
   }
 
   /* Ask the server side to make an API call to Dark Sky to get the weather */
@@ -112,6 +107,7 @@ class App extends React.Component {
 
         // Update the state with the retrieveved weather data and the city name
         that.setState({
+          units: units,
           weather: data,
           isLoadingWeather: false
         });

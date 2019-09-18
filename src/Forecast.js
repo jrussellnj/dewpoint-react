@@ -57,7 +57,6 @@ class Forecast extends React.Component {
           <div className="col-12">
             <div className="row justify-content-center forecast-holder">
               <div className="col-12">
-
                 <div className="row">
                   <div className="col-12">
                     <h5 className="city-name">{this.props.city}</h5>
@@ -75,12 +74,10 @@ class Forecast extends React.Component {
                     <p>But that's alright! You can use the site without geolocation by entering a location above.</p>
                   </div>
                 </div>
-
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
       </div>
     );
   }
