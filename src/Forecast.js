@@ -1,5 +1,5 @@
 import React from 'react';
-import Moment from 'react-moment';
+import DailyBlock from './DailyBlock.js';
 
 import './Forecast.scss';
 
@@ -10,11 +10,11 @@ class Forecast extends React.Component {
   /* Render */
   render() {
 
-    // TODO: Break this down into more components, such as <ForecastBlock> for each individual day block!
+    // TODO: Break this down into more components, such as <CurrentlyBlock> and <DailyBlock> for each individual day block!
     let currentlyData = this.props.weather != null ?
       <div className="col-11 col-md-12 currently day">
         <div className="row today">
-          <div className={'p-3 inner-wrapper col-12 col-md-6 ' + this.getDiscomfortLevel(this.props.weather.currently.dewPoint).dpClass}>
+          <div className={'p-3 inner-wrapper col-12 col-md-6 ' + this.getDiscomfortLevel(this.props.weather.currently.dewPoint, this.props.units).dpClass}>
 
             <div className="currently-data">
               <p className="heading">Right Now</p>
@@ -35,13 +35,13 @@ class Forecast extends React.Component {
               </div>
 
               <div className="dewpoint">
-                <div><img className="dewdrop-icon" src="/image/drop-silhouette.svg" alt="Dew drop" /> {this.getValueByUnits(this.props.weather.currently.dewPoint)}&deg;</div>
-                <div className="discomfort-text">{this.getDiscomfortLevel(this.props.weather.currently.dewPoint).text}</div>
+                <div><img className="dewdrop-icon" src="/image/drop-silhouette.svg" alt="Dew drop" /> {this.getValueByUnits(this.props.weather.currently.dewPoint, this.props.units)}&deg;</div>
+                <div className="discomfort-text">{this.getDiscomfortLevel(this.props.weather.currently.dewPoint, this.props.units).text}</div>
               </div>
             </div>
           </div>
 
-          <div className={'p-3 inner-wrapper col-12 col-md-6 ' + this.getDiscomfortLevel(this.props.weather.daily.data[0].dewPoint).dpClass}>
+          <div className={'p-3 inner-wrapper col-12 col-md-6 ' + this.getDiscomfortLevel(this.props.weather.daily.data[0].dewPoint, this.props.units).dpClass}>
             <p className="heading">Today's forecast</p>
 
             <div>
@@ -60,36 +60,25 @@ class Forecast extends React.Component {
             </div>
 
             <div className="dewpoint">
-              <div><img className="dewdrop-icon" src="/image/drop-silhouette.svg" alt="Dew drop" /> {this.getValueByUnits(this.props.weather.daily.data[0].dewPoint)}&deg;</div>
-              <div className="discomfort-text">{this.getDiscomfortLevel(this.props.weather.daily.data[0].dewPoint).text}</div>
+              <div><img className="dewdrop-icon" src="/image/drop-silhouette.svg" alt="Dew drop" /> {this.getValueByUnits(this.props.weather.daily.data[0].dewPoint, this.props.units)}&deg;</div>
+              <div className="discomfort-text">{this.getDiscomfortLevel(this.props.weather.daily.data[0].dewPoint, this.props.units).text}</div>
             </div>
           </div>
         </div>
       </div>
       : null;
 
-    let dailyData = this.props.weather != null ? this.props.weather.daily.data.slice(1).map(day =>
-      <div className="col-11 col-sm-4 col-md-3 day" key={day.time}>
-        <div className={ 'd-flex align-items-center p-3 inner-wrapper ' + this.getDiscomfortLevel(day.dewPoint).dpClass}>
-          <div className="day-contents">
-
-            <div className="temperature">
-              <div className="date">
-                <Moment format="dddd, MMMM, Do">
-                  {this.offsetTime(day.time, this.props.weather.offset)}
-                </Moment>
-              </div>
-              <img className="dewdrop-icon" src="/image/drop-silhouette.svg" alt="Dew drop" /> {this.getValueByUnits(day.dewPoint)}&deg;
-              <div className="discomfort-text">{this.getDiscomfortLevel(day.dewPoint).text}</div>
-            </div>
-
-            <div className="summary">
-              <div>{day.summary} High: {Math.round(day.temperatureHigh)}&deg;. Humidity: {Math.round(day.humidity * 100)}%.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    ) : null;
+    let dailyData = (this.props.weather == null ? null :
+      this.props.weather.daily.data.slice(1).map(day =>
+        <DailyBlock
+          day={day}
+          key={day.time}
+          getDiscomfortLevel={this.getDiscomfortLevel}
+          getValueByUnits={this.getValueByUnits}
+          offset={this.props.weather.offset}
+          units={this.props.units} />
+      )
+    );
 
     return (
       <div>
@@ -135,10 +124,9 @@ class Forecast extends React.Component {
   // Custom methods
 
   /* Return the point on the discomfort scale for the provided dewpoint */
-  getDiscomfortLevel(dewpoint) {
+  getDiscomfortLevel(dewpoint, units) {
 
     let
-      that = this,
       roundedDewpoint = Math.round(dewpoint),
       levelIsFound = false,
       thisLevel = null,
@@ -154,8 +142,8 @@ class Forecast extends React.Component {
 
     scale.forEach(function (value, i) {
       if (!levelIsFound) {
-        if ((that.props.units !== null && that.props.units === 'si' && roundedDewpoint < value['c'])
-           || (((that.props.units !== null && that.props.units === 'us') || that.props.units === null) && roundedDewpoint < value['f'])) {
+        if ((units !== null && units === 'si' && roundedDewpoint < value['c'])
+           || (((units !== null && units === 'us') || units === null) && roundedDewpoint < value['f'])) {
           levelIsFound = true
           thisLevel = value;
         }
@@ -169,17 +157,8 @@ class Forecast extends React.Component {
   }
 
   /* Return a number (usually the dew point value)  with either one decimal place or zero depending on the user's selected units */
-  getValueByUnits(value) {
-    return value.toFixed(this.props.units === 'si' ? '1' : '0');
-  }
-
-  /* Return a formatted date based on a timestamp and UTC offset */
-  offsetTime(timestamp, offset) {
-    let
-      date = new Date(),
-      providedDate = new Date((timestamp * 1000) + (offset * 3600000) + (date.getTimezoneOffset() * 60000));
-
-    return providedDate;
+  getValueByUnits(value, units) {
+    return value.toFixed(units === 'si' ? '1' : '0');
   }
 }
 
