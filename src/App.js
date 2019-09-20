@@ -22,6 +22,7 @@ class App extends React.Component {
 
     this.changeUnits = this.changeUnits.bind(this);
     this.updateCoords = this.updateCoords.bind(this);
+    this.getUserLocation = this.getUserLocation.bind(this);
   }
 
   componentDidMount() {

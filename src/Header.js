@@ -30,7 +30,7 @@ class Header extends React.Component {
         <div className="col-12 col-md-6">
           <div>
             <input id="location-search" type="text" placeholder="Find dew point in another location..." onClick={(e) => this.clearContents(e)} />
-            <button className="locate-me" onClick={this.props.locateMe}><img src="/image/target.svg" alt="Locating icon" /> Use my location</button>
+            <button className="locate-me" onClick={this.props.getUserLocation}><img src="/image/target.svg" alt="Locating icon" /> Use my location</button>
           </div>
 
           <div className="mb-2">
