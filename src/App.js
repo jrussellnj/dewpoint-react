@@ -21,6 +21,7 @@ class App extends React.Component {
     }
 
     this.changeUnits = this.changeUnits.bind(this);
+    this.getWeather = this.getWeather.bind(this);
   }
 
   componentDidMount() {
@@ -34,6 +35,7 @@ class App extends React.Component {
       <div className="container">
         <Header
           getUserLocation={this.getUserLocation}
+          getWeather={this.getWeather}
           units={this.state.units}
           changeUnits={this.changeUnits} />
 
