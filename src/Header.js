@@ -76,8 +76,8 @@ class Header extends React.Component {
             return;
           }
 
-          // Get weather for the requested location
-          that.props.getWeather({ latitude: results[0].geometry.location.lat(), longitude: results[0].geometry.location.lng() }, that.props.units);
+          // Update the state's coordinates, which kicks off a new weather data request
+          that.props.updateCoords({ latitude: results[0].geometry.location.lat(), longitude: results[0].geometry.location.lng() });
         });
       }
     });

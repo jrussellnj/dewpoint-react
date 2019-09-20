@@ -21,7 +21,7 @@ class App extends React.Component {
     }
 
     this.changeUnits = this.changeUnits.bind(this);
-    this.getWeather = this.getWeather.bind(this);
+    this.updateCoords = this.updateCoords.bind(this);
   }
 
   componentDidMount() {
@@ -35,7 +35,7 @@ class App extends React.Component {
       <div className="container">
         <Header
           getUserLocation={this.getUserLocation}
-          getWeather={this.getWeather}
+          updateCoords={this.updateCoords}
           units={this.state.units}
           changeUnits={this.changeUnits} />
 
@@ -89,11 +89,6 @@ class App extends React.Component {
     }
   }
 
-  /* Switch the units between imperial and metric */
-  changeUnits() {
-    this.getWeather(this.state.coords, (this.state.units === 'si' ? 'us' : 'si'));
-  }
-
   /* Ask the server side to make an API call to Dark Sky to get the weather */
   getWeather(coords, units) {
     let that = this,
@@ -137,6 +132,21 @@ class App extends React.Component {
 
           that.setState({ city: sanitizedAddress });
       });
+  }
+
+  /* Switch the units between imperial and metric */
+  changeUnits() {
+    this.getWeather(this.state.coords, (this.state.units === 'si' ? 'us' : 'si'));
+  }
+
+  /* Used for getting weather from other locations than the one used on site load */
+  updateCoords(coords) {
+
+    // Update the state with the new coordinates
+    this.setState({ coords: coords });
+
+    // Make a call to getWeather so we actually display the weather of these new coordinates' location
+    this.getWeather(this.state.coords, this.state.units);
   }
 }
 
