@@ -122,8 +122,9 @@ body {
       }
 
       .small-icon {
-        @include vertical-align;
+        display: inline-block;
         height: 15px;
+        vertical-align: top;
       }
 
       .day-contents {
