@@ -93,7 +93,7 @@ class App extends React.Component {
   /* Ask the server side to make an API call to Dark Sky to get the weather */
   getWeather(coords, units) {
     let that = this,
-        url = 'https://localhost:3443/get-weather?longitude=' + coords.longitude + '&latitude=' + coords.latitude + '&units=' + units;
+        url = '/get-weather?longitude=' + coords.longitude + '&latitude=' + coords.latitude + '&units=' + units;
 
     this.setState({ 'isLoadingWeather': true });
 

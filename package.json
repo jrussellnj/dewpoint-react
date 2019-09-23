@@ -2,6 +2,7 @@
   "name": "dewpoint-react",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3001/",
   "dependencies": {
     "express": "^4.17.1",
     "moment": "^2.24.0",
