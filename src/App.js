@@ -63,7 +63,7 @@ class App extends React.Component {
     let that = this;
 
     // Get the user's latitude and longitude
-    this.setState({ 'isFindingLocation': true, 'weather': null, 'city': null });
+    this.setState({ 'isFindingLocation': true, 'weather': null, 'city': null, 'coords': null });
 
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
@@ -143,7 +143,9 @@ class App extends React.Component {
 
   /* Switch the units between imperial and metric */
   changeUnits() {
-    this.getWeather(this.state.coords, (this.state.units === 'si' ? 'us' : 'si'));
+    if (this.state.coords) {
+      this.getWeather(this.state.coords, (this.state.units === 'si' ? 'us' : 'si'));
+    }
   }
 
   /* Used for getting weather from other locations than the one used on site load */
