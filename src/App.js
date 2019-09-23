@@ -17,7 +17,10 @@ class App extends React.Component {
       city: null,
       coords: null,
       units: 'us', // TODO: Set this based on a cookie
-      weather: null
+      weather: null,
+      isFindingLocation: false,
+      isLoadingWeather: false,
+      locationFailed: false
     }
 
     this.changeUnits = this.changeUnits.bind(this);
@@ -44,6 +47,7 @@ class App extends React.Component {
           city={this.state.city}
           isFindingLocation={this.state.isFindingLocation}
           isLoadingWeather={this.state.isLoadingWeather}
+          locationFailed={this.state.locationFailed}
           units={this.state.units}
           weather={this.state.weather} />
 
@@ -59,7 +63,7 @@ class App extends React.Component {
     let that = this;
 
     // Get the user's latitude and longitude
-    this.setState({ 'isFindingLocation': true });
+    this.setState({ 'isFindingLocation': true, 'weather': null, 'city': null });
 
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
@@ -75,7 +79,8 @@ class App extends React.Component {
 
         // If not, display a 'geolocation failed' message
         function(error) {
-          console.log(error);
+          // If the user's browser doesn't have a geolocation API at all, display an error
+          that.setState({ 'isFindingLocation': false, 'locationFailed': true });
         },
 
         // Options
@@ -86,7 +91,7 @@ class App extends React.Component {
     else {
 
       // If the user's browser doesn't have a geolocation API at all, display an error
-      console.log("Location unavailable from browser");
+      that.setState({ 'isFindingLocation': false, 'locationFailed': true });
     }
   }
 
@@ -107,7 +112,8 @@ class App extends React.Component {
         that.setState({
           units: units,
           weather: data,
-          isLoadingWeather: false
+          isLoadingWeather: false,
+          locationFailed: false
         });
 
         that.getCityName(coords);

@@ -48,8 +48,8 @@ class Forecast extends React.Component {
       <div>
         <div className="row loading-icons">
           <div className="col-12 text-center">
-            { this.props.isFindingLocation ? <img src="/image/target.svg" id="getting-location" alt="Finding location" /> : null }
-            { this.props.isLoadingWeather ? <img src="/image/sun-cloud.svg" id="getting-weather" alt="Loading weather" /> : null }
+            { !this.props.isFindingLocation ? null : <img src="/image/target.svg" id="getting-location" alt="Finding location" /> }
+            { !this.props.isLoadingWeather ? null : <img src="/image/sun-cloud.svg" id="getting-weather" alt="Loading weather" /> }
           </div>
         </div>
 
@@ -68,12 +68,14 @@ class Forecast extends React.Component {
                   {dailyData}
                 </div>
 
-                <div className="row text-center" id="denied-geolocation">
-                  <div className="col-12">
-                    <h3>Geolocation failed</h3>
-                    <p>But that's alright! You can use the site without geolocation by entering a location above.</p>
+                { !this.props.locationFailed ? null :
+                  <div className="row text-center" id="denied-geolocation">
+                    <div className="col-12">
+                      <h3>Geolocation failed</h3>
+                      <p>But that's alright! You can use the site without geolocation by entering a location above.</p>
+                    </div>
                   </div>
-                </div>
+                }
               </div>
             </div>
           </div>

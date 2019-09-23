@@ -161,15 +161,6 @@ body {
   }
 }
 
-/* Geolocation denied */
-#denied-geolocation {
-  display: none;
-
-  &.showing {
-    display: flex;
-  }
-}
-
 /* Location search bar */
 #location-search {
   background-color: #fff;
