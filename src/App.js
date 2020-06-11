@@ -3,8 +3,11 @@ import Forecast from './Forecast';
 import Header from './Header';
 import Footer from './Footer';
 import keys from './env.js'
-
+import ReactGA from 'react-ga';
 import './App.css';
+
+ReactGA.initialize('UA-124178989-1');
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 class App extends React.Component {
 
@@ -136,6 +139,11 @@ class App extends React.Component {
           addressComponents = data.results[0].address_components,
           localityPieces  = addressComponents.filter(n => [ 'neighborhood', 'locality', 'administrative_area_level_1', 'country' ].includes(n.types[0]) ),
           sanitizedAddress = localityPieces.map(n => n.long_name).join(', ');
+
+          ReactGA.event({
+            action: 'Got city name',
+            value: sanitizedAddress
+          });
 
           that.setState({ city: sanitizedAddress });
       });
