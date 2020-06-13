@@ -141,8 +141,9 @@ class App extends React.Component {
           sanitizedAddress = localityPieces.map(n => n.long_name).join(', ');
 
           ReactGA.event({
+            category: 'Weeather lookup',
             action: 'Got city name',
-            value: sanitizedAddress
+            label: sanitizedAddress
           });
 
           that.setState({ city: sanitizedAddress });
