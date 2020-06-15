@@ -26,7 +26,6 @@ jobs:
       env:
         REACT_APP_GOOGLE_MAPS_API_KEY: ${{ secrets.REACT_APP_GOOGLE_MAPS_API_KEY }}
 
-    - uses: actions/checkout@v2
     - name: rsync deployments
       uses: burnett01/rsync-deployments@4.0
       with:
