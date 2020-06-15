@@ -2,7 +2,6 @@ import React from 'react';
 import Forecast from './Forecast';
 import Header from './Header';
 import Footer from './Footer';
-import keys from './env.js'
 import ReactGA from 'react-ga';
 import './App.css';
 
@@ -127,7 +126,7 @@ class App extends React.Component {
   getCityName(coords) {
     let
       that = this,
-      geocodeUrl = 'https://maps.googleapis.com/maps/api/geocode/json?key=' + keys.googleMapsApi  + '&latlng=' + coords.latitude + ',' + coords.longitude;
+      geocodeUrl = 'https://maps.googleapis.com/maps/api/geocode/json?key=' + process.env.REACT_APP_GOOGLE_MAPS_API_KEY + '&latlng=' + coords.latitude + ',' + coords.longitude;
 
     fetch(geocodeUrl)
       .then(results => {
