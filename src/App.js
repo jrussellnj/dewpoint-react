@@ -63,6 +63,7 @@ class App extends React.Component {
   /* Locate the user */
   getUserLocation() {
     let that = this;
+    let didGetGeolocation = false;
 
     // Get the user's latitude and longitude
     this.setState({ 'isFindingLocation': true, 'weather': null, 'city': null, 'coords': null });
@@ -74,26 +75,35 @@ class App extends React.Component {
         function(userCoords) {
 
           that.setState({ 'isFindingLocation': false, coords: userCoords.coords });
+          didGetGeolocation = 'Yes';
+          ReactGA.event({ category: 'Geolocation', action: 'Browser geolocation query', label: didGetGeolocation });
 
           // Get the weather
           that.getWeather(userCoords.coords, that.state.units);
+
         },
 
         // If not, display a 'geolocation failed' message
         function(error) {
-          // If the user's browser doesn't have a geolocation API at all, display an error
+
+          // If the user's browser has geolocation but the request still failed, display an error
           that.setState({ 'isFindingLocation': false, 'locationFailed': true });
+          didGetGeolocation = 'No - geolocation failed';
+          ReactGA.event({ category: 'Geolocation', action: 'Browser geolocation query', label: didGetGeolocation });
         },
 
         // Options
         {
           timeout: 10000
         });
+
     }
     else {
 
       // If the user's browser doesn't have a geolocation API at all, display an error
       that.setState({ 'isFindingLocation': false, 'locationFailed': true });
+      didGetGeolocation = 'No - Browser has no geolocation api';
+      ReactGA.event({ category: 'Geolocation', action: 'Browser geolocation query', label: didGetGeolocation });
     }
   }
 
