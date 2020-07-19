@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter, useParams } from "react-router-dom";
 import keys from './env.js'
 
 import './Header.scss';
@@ -64,6 +65,23 @@ class Header extends React.Component {
       autocomplete = new google.maps.places.Autocomplete(input, { fields: ['place_id', 'name', 'types'] }),
       geocoder = new google.maps.Geocoder();
 
+    // If the URL contains a location string, kick off a lookup based on that
+    if (this.props.match.params.id) {
+      const address = this.props.match.params.id
+      console.log("----- LOOK UP", address)
+
+      // Get the latitude and longitude for the new location and then find its weather
+      geocoder.geocode({ 'address': address }, function(results, status) {
+        if (status !== 'OK') {
+          window.alert('Geocoder failed due to: ' + status);
+          return;
+        }
+
+        // Update the state's coordinates, which kicks off a new weather data request
+        that.props.updateCoords({ latitude: results[0].geometry.location.lat(), longitude: results[0].geometry.location.lng() });
+      });
+    }
+
     autocomplete.addListener('place_changed', function() {
       let place = autocomplete.getPlace();
 
@@ -124,4 +142,4 @@ class Header extends React.Component {
   }
 }
 
-export default Header;
+export default withRouter(Header);

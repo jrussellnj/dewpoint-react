@@ -1,4 +1,10 @@
 import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 import Forecast from './Forecast';
 import Header from './Header';
 import Footer from './Footer';
@@ -32,29 +38,38 @@ class App extends React.Component {
 
   componentDidMount() {
 
-    // Kick off the site by finding the user's location
-    this.getUserLocation();
+    // PUT THIS IN THE HEADER?????????????????????????
+
+    // Kick off the site by finding the user's location if there is no pre-supplied URL address
+    /*if (!this.props.match.params.id) {
+      this.getUserLocation();
+    }*/
   }
 
   render() {
     return (
-      <div className="container">
-        <Header
-          getUserLocation={this.getUserLocation}
-          updateCoords={this.updateCoords}
-          units={this.state.units}
-          changeUnits={this.changeUnits} />
+      <Router>
+        <div className="container">
+          <Switch>
+            <Route path="/:id" children={<Header
+              getUserLocation={this.getUserLocation}
+              updateCoords={this.updateCoords}
+              units={this.state.units}
+              changeUnits={this.changeUnits} />
+            } />
+          </Switch>
 
-        <Forecast
-          city={this.state.city}
-          isFindingLocation={this.state.isFindingLocation}
-          isLoadingWeather={this.state.isLoadingWeather}
-          locationFailed={this.state.locationFailed}
-          units={this.state.units}
-          weather={this.state.weather} />
+          <Forecast
+            city={this.state.city}
+            isFindingLocation={this.state.isFindingLocation}
+            isLoadingWeather={this.state.isLoadingWeather}
+            locationFailed={this.state.locationFailed}
+            units={this.state.units}
+            weather={this.state.weather} />
 
-        <Footer />
-      </div>
+          <Footer />
+        </div>
+      </Router>
     );
   }
 
