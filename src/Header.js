@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter, useParams } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import keys from './env.js'
 
 import './Header.scss';
@@ -63,15 +63,14 @@ class Header extends React.Component {
       that = this,
       input = document.getElementById('location-search'),
       autocomplete = new google.maps.places.Autocomplete(input, { fields: ['place_id', 'name', 'types'] }),
-      geocoder = new google.maps.Geocoder();
+      geocoder = new google.maps.Geocoder(),
+      urlParam = this.props.match.params;
 
     // If the URL contains a location string, kick off a lookup based on that
-    if (this.props.match.params.id) {
-      const address = this.props.match.params.id
-      console.log("----- LOOK UP", address)
+    if (urlParam[0] !== undefined) {
 
       // Get the latitude and longitude for the new location and then find its weather
-      geocoder.geocode({ 'address': address }, function(results, status) {
+      geocoder.geocode({ 'address': urlParam[0] }, function(results, status) {
         if (status !== 'OK') {
           window.alert('Geocoder failed due to: ' + status);
           return;
@@ -81,7 +80,11 @@ class Header extends React.Component {
         that.props.updateCoords({ latitude: results[0].geometry.location.lat(), longitude: results[0].geometry.location.lng() });
       });
     }
+    else {
+      this.props.getUserLocation();
+    }
 
+    // For when they click on the location in the address autocomplete bar
     autocomplete.addListener('place_changed', function() {
       let place = autocomplete.getPlace();
 
@@ -96,6 +99,8 @@ class Header extends React.Component {
 
           // Update the state's coordinates, which kicks off a new weather data request
           that.props.updateCoords({ latitude: results[0].geometry.location.lat(), longitude: results[0].geometry.location.lng() });
+
+          // TODO: Push history here
         });
       }
     });

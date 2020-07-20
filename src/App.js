@@ -2,8 +2,7 @@ import React from 'react';
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 import Forecast from './Forecast';
 import Header from './Header';
@@ -36,22 +35,14 @@ class App extends React.Component {
     this.getUserLocation = this.getUserLocation.bind(this);
   }
 
-  componentDidMount() {
-
-    // PUT THIS IN THE HEADER?????????????????????????
-
-    // Kick off the site by finding the user's location if there is no pre-supplied URL address
-    /*if (!this.props.match.params.id) {
-      this.getUserLocation();
-    }*/
-  }
+  componentDidMount() { }
 
   render() {
     return (
       <Router>
         <div className="container">
           <Switch>
-            <Route path="/:id" children={<Header
+            <Route path="/*" children={<Header
               getUserLocation={this.getUserLocation}
               updateCoords={this.updateCoords}
               units={this.state.units}
