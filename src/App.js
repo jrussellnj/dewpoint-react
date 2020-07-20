@@ -1,4 +1,10 @@
 import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  withRouter
+} from "react-router-dom";
 import Forecast from './Forecast';
 import Header from './Header';
 import Footer from './Footer';
@@ -30,31 +36,32 @@ class App extends React.Component {
     this.getUserLocation = this.getUserLocation.bind(this);
   }
 
-  componentDidMount() {
-
-    // Kick off the site by finding the user's location
-    this.getUserLocation();
-  }
+  componentDidMount() { }
 
   render() {
     return (
-      <div className="container">
-        <Header
-          getUserLocation={this.getUserLocation}
-          updateCoords={this.updateCoords}
-          units={this.state.units}
-          changeUnits={this.changeUnits} />
+      <Router>
+        <div className="container">
+          <Switch>
+            <Route path="/*" children={<Header
+              getUserLocation={this.getUserLocation}
+              updateCoords={this.updateCoords}
+              units={this.state.units}
+              changeUnits={this.changeUnits} />
+            } />
+          </Switch>
 
-        <Forecast
-          city={this.state.city}
-          isFindingLocation={this.state.isFindingLocation}
-          isLoadingWeather={this.state.isLoadingWeather}
-          locationFailed={this.state.locationFailed}
-          units={this.state.units}
-          weather={this.state.weather} />
+          <Forecast
+            city={this.state.city}
+            isFindingLocation={this.state.isFindingLocation}
+            isLoadingWeather={this.state.isLoadingWeather}
+            locationFailed={this.state.locationFailed}
+            units={this.state.units}
+            weather={this.state.weather} />
 
-        <Footer />
-      </div>
+          <Footer />
+        </div>
+      </Router>
     );
   }
 
@@ -146,6 +153,10 @@ class App extends React.Component {
           });
 
           that.setState({ city: sanitizedAddress });
+
+          // Push onto the browser history stack
+          const sanitizedAddressForUrl = sanitizedAddress.replace(/\s/g, '+');
+          this.props.history.push('/' + sanitizedAddressForUrl)
       });
   }
 
@@ -167,4 +178,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default withRouter(App);
