@@ -2,7 +2,8 @@ import React from 'react';
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  withRouter
 } from "react-router-dom";
 import Forecast from './Forecast';
 import Header from './Header';
@@ -152,6 +153,10 @@ class App extends React.Component {
           });
 
           that.setState({ city: sanitizedAddress });
+
+          // Push onto the browser history stack
+          const sanitizedAddressForUrl = sanitizedAddress.replace(/\s/g, '+');
+          this.props.history.push('/' + sanitizedAddressForUrl)
       });
   }
 
@@ -173,4 +178,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default withRouter(App);

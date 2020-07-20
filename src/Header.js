@@ -99,10 +99,6 @@ class Header extends React.Component {
 
           // Update the state's coordinates, which kicks off a new weather data request
           that.props.updateCoords({ latitude: results[0].geometry.location.lat(), longitude: results[0].geometry.location.lng() });
-
-          // Push onto the history stack
-          const formattedAddress = results[0].formatted_address.replace(/\s/g, '+');
-          that.props.history.push(formattedAddress)
         });
       }
     });
