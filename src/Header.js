@@ -67,7 +67,7 @@ class Header extends React.Component {
       urlParam = this.props.match.params;
 
     // If the URL contains a location string, kick off a lookup based on that
-    if (urlParam[0] !== undefined) {
+    if (!!urlParam[0]) {
 
       // Get the latitude and longitude for the new location and then find its weather
       geocoder.geocode({ 'address': urlParam[0] }, function(results, status) {
@@ -100,7 +100,9 @@ class Header extends React.Component {
           // Update the state's coordinates, which kicks off a new weather data request
           that.props.updateCoords({ latitude: results[0].geometry.location.lat(), longitude: results[0].geometry.location.lng() });
 
-          // TODO: Push history here
+          // Push onto the history stack
+          const formattedAddress = results[0].formatted_address.replace(/\s/g, '+');
+          that.props.history.push(formattedAddress)
         });
       }
     });
